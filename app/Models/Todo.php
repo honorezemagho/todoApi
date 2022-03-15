@@ -9,7 +9,13 @@ use Illuminate\Database\Eloquent\Model;
  * @SWG\Definition(
  *      definition="Todo",
  *      required={"name", "activity", "state", "dateline"},
- *      @SWG\Property(
+ * 
+ *  @SWG\Property(
+ *          property="todos",
+ *          description="todos",
+ *          type="object",
+ * 
+ *        @SWG\Property(
  *          property="id",
  *          description="id",
  *          type="integer",
@@ -42,6 +48,15 @@ use Illuminate\Database\Eloquent\Model;
  *          type="string",
  *          format="date-time"
  *      )
+ *      ),
+
+ *      @SWG\Property(
+ *          property="productivity_score",
+ *          description="productivity_score",
+ *          type="string",
+ *          format="0.2"
+ *      )
+ *   
  * )
  */
 

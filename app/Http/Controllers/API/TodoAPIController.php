@@ -34,8 +34,15 @@ class TodoAPIController extends AppBaseController
      *      summary="Get a listing of the Todos.",
      *      tags={"Todo"},
      *      description="Get all Todos",
-     *
      *      produces={"application/json"},
+     * 
+     *  @SWG\Parameter(
+     *      required=false,
+     *      name="state",
+     *      description="search by state (done, undone)",
+     *      in="query", type="string",
+     *      enum={"done", "undone"}),
+     * 
      *      @SWG\Response(
      *          response=200,
      *          description="successful operation",
@@ -60,13 +67,30 @@ class TodoAPIController extends AppBaseController
      */
     public function index(Request $request)
     {
+
+       if($request->state)
+
+       {
+         $request->validate([
+            'state' => 'required|in:done,undone'
+        ]);
+       }
+
+
         $todos = $this->todoRepository->all(
             $request->except(['skip', 'limit']),
             $request->get('skip'),
             $request->get('limit')
         );
 
-        return $this->sendResponse(TodoResource::collection($todos), 'Todos retrieved successfully');
+        $result['todos'] = TodoResource::collection($todos);
+
+        $total_done_tasks = $this->todoRepository->allQuery(['state' => 'done'])->get()->count();;
+        $total_tasks = $this->todoRepository->allQuery([])->get()->count();
+
+        $result['productivity_score'] = $total_done_tasks / $total_tasks;
+
+        return $this->sendResponse($result, 'Todos retrieved successfully');
     }
 
     /**

@@ -16,6 +16,19 @@
                 "produces": [
                     "application/json"
                 ],
+                "parameters": [
+                    {
+                        "name": "state",
+                        "in": "query",
+                        "description": "search by state (done, undone)",
+                        "required": false,
+                        "type": "string",
+                        "enum": [
+                            "done",
+                            "undone"
+                        ]
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "successful operation",
@@ -139,12 +152,12 @@
                     {
                         "name": "body",
                         "in": "body",
-                        "description": "status of the todo",
+                        "description": "update the state of the todo",
                         "required": false,
                         "schema": {
                             "properties": {
-                                "status": {
-                                    "description": "update the status of todo (done or undone)",
+                                "state": {
+                                    "description": "state of todo (done or undone)",
                                     "type": "string"
                                 }
                             }
@@ -220,32 +233,43 @@
                 "dateline"
             ],
             "properties": {
-                "id": {
-                    "description": "id",
-                    "type": "integer",
-                    "format": "int32"
+                "todos": {
+                    "description": "todos",
+                    "properties": {
+                        "id": {
+                            "description": "id",
+                            "type": "integer",
+                            "format": "int32"
+                        },
+                        "name": {
+                            "description": "name",
+                            "type": "string"
+                        },
+                        "activity": {
+                            "description": "activity",
+                            "type": "string"
+                        },
+                        "state": {
+                            "description": "state",
+                            "type": "string"
+                        },
+                        "dateline": {
+                            "description": "dateline",
+                            "type": "string",
+                            "format": "date"
+                        },
+                        "created_at": {
+                            "description": "created_at",
+                            "type": "string",
+                            "format": "date-time"
+                        }
+                    },
+                    "type": "object"
                 },
-                "name": {
-                    "description": "name",
-                    "type": "string"
-                },
-                "activity": {
-                    "description": "activity",
-                    "type": "string"
-                },
-                "state": {
-                    "description": "state",
-                    "type": "string"
-                },
-                "dateline": {
-                    "description": "dateline",
+                "productivity_score": {
+                    "description": "productivity_score",
                     "type": "string",
-                    "format": "date"
-                },
-                "created_at": {
-                    "description": "created_at",
-                    "type": "string",
-                    "format": "date-time"
+                    "format": "0.2"
                 }
             }
         },
